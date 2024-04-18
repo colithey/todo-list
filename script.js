@@ -3,6 +3,8 @@ const descArea = document.querySelector('#desc')
 const btnAdd = document.querySelector('#add')
 const listDiv = document.querySelector('.list')
 
+let taskList = JSON.parse(localStorage.getItem('toDoList')) || []
+
 const createToDo = (title, desc) => {
     // 0 '' null undefined NaN = false
     // 'jkfs' ' ' 00000.1 [] {} () => {} = true
@@ -38,7 +40,26 @@ const createToDo = (title, desc) => {
     }
 }
 
+taskList.forEach((el) => {
+    createToDo(el.title, el.desc)
+})
+
+const addToArray = () => {
+    const taskObj = {
+        title: titleInp.value,
+        desc: descArea.value
+    }
+    taskList = [...taskList, taskObj]
+
+    localStorage.setItem('toDoList', JSON.stringify(taskList))
+
+    listDiv.innerHTML = ''
+    taskList.forEach((el) => {
+        createToDo(el.title, el.desc)
+    })
+}
+
 btnAdd.addEventListener('click', (e) => {
     e.preventDefault()
-    createToDo(titleInp.value, descArea.value)
+    addToArray()
 })
